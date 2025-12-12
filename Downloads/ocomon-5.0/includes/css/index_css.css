@@ -1,0 +1,75 @@
+header {
+  padding: 0px, 5px, 20px, 20px;
+  background: #756c75;
+  /* #5f585e */
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+.logo {
+  max-height: 46.3px;
+  min-height: 46.3px;
+  padding: 4px;
+}
+
+
+
+#iframeMain {
+  position: relative;
+  height: 99%;
+  width: calc(100% - 40px);
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.footer-container {
+  margin-top: 50px;
+}
+.footer-content {
+  height: 50px;
+}
+.footer-content-hidden {
+  display: none;
+}
+
+.footer-content-hidden .footer-text {
+  display: none;
+}
+
+.cursor_to_down {
+  cursor: url("../imgs/double-arrow-down.svg"), pointer;
+}
+.cursor_to_up {
+  cursor: url("../imgs/double-arrow-up.svg"), pointer;
+}
+
+#footer_fixed {
+  position: fixed;
+  bottom: 0;
+  display: block;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 5px;
+  background-color: #f1f1f1;
+  border-top: 1px solid #cccccc;
+  z-index: 10000;
+}
+
+@media only screen and (max-width: 768px) {
+  #iframeMain {
+    display: block;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #181818;
+  opacity: 0.5;
+  /* Firefox */
+}

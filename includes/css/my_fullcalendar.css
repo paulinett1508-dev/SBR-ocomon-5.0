@@ -1,0 +1,70 @@
+
+:root {
+    --color-text-closed: white;
+    --color-bg-closed: #48606B;
+    --color-border-closed: white;
+    --color-text-opened: white;
+    --color-bg-opened: #0C755B;
+    --color-border-opened: white;
+    --color-text-scheduled: white;
+    --color-bg-scheduled: #FF851B;
+    --color-border-scheduled: white;
+}
+
+
+.calendar {
+    width: 90%;
+    margin: 10px auto;
+    /* height: 60vh; */
+    height: auto;
+}
+
+.fc-daygrid-event-harness {
+    /* background-color: #3A4D56 !important; */
+    border-radius: 5px !important;
+}
+
+a > .fc-event-title  { /* a > .fc-event-time */
+    /* color: white !important; */
+    font-weight: lighter!important;
+}
+
+a > .fc-daygrid-event-dot {
+    border-color: white !important;
+    background-color: white !important;
+    color: white !important;
+}
+
+.fc-event-time {
+    overflow: visible !important;
+}
+
+.event-opened {
+    color: var(--color-text-opened) !important;
+    background-color: var(--color-bg-opened) !important;
+    border-color: var(--color-border-opened) !important;
+}
+.badge-opened {
+    color: var(--color-bg-opened) !important;
+    background-color: var(--color-bg-opened) !important;
+}
+
+.event-closed {
+    color: var(--color-text-closed) !important;
+    background-color: var(--color-bg-closed) !important;
+    border-color: var(--color-border-closed) !important;
+}
+.badge-closed {
+    color: var(--color-bg-closed) !important;
+    background-color: var(--color-bg-closed) !important;
+}
+
+.event-scheduled {
+    color: var(--color-text-scheduled) !important;
+    background-color: var(--color-bg-scheduled) !important;
+    border-color: var(--color-border-scheduled) !important;
+}
+.badge-scheduled {
+    color: var(--color-bg-scheduled) !important;
+    background-color: var(--color-bg-scheduled) !important;
+}

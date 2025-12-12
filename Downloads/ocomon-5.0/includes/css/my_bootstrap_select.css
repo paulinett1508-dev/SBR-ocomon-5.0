@@ -1,0 +1,15 @@
+.bootstrap-select .filter-option, .input-select-multi { 
+    white-space: normal; 
+    word-wrap: normal;
+    overflow: visible!important; 
+    height:auto!important; 
+}
+.dropdown-menu .selected {
+    background-color: #DDDDDD;
+    /* background-color: #137EDC; */
+    /* color: white !important */
+}
+.dropdown-menu .selected:hover, .dropdown-item:hover {
+    background: #137EDC!important;
+    color: white !important;
+}

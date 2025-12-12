@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Dynamic SEO-Friendly Tag Cloud Generator Examples</title>
+
+    <link rel="stylesheet" href="jquery.tagcloud.css" />
+</head>
+
+
+
+<body>
+    <div class="container">
+        
+        <h2>Example</h2>
+        <p class="lead">Define tag data in JavaScript.</p>
+        <div id="demoCloud2"></div>
+    </div>
+
+
+	<!-- <script src="https://code.jquery.com/jquery-latest.js" type="text/javascript" charset="utf-8"></script> -->
+    <script src="../jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        
+        let options = {
+            container: {
+                width: 960,
+                //fontFamily: '"Times New Roman", Times, serif',
+                backgroundColor: '#fafaf8'
+            },
+            tag: {
+                format:      '<a href="{tag.link}">{tag.name}</a>: {tag.weight}',
+                maxFontSize: 45,    // max font size in pixels
+                minFontSize: 8,     // min font size in pixels
+                textShadow:  true   // text shadow, enabled for better visibility
+            },
+            data: [
+                { name: 'HTML',          link: '#', weight: 60 },
+                { name: 'HTML5',         link: '#', weight: 90, tooltip: 'Sample "tooltip" message' },
+                { name: 'CSS',           link: '#', weight: 65 },
+                { name: 'CSS3',          link: '#', weight: 35 },
+                { name: 'JavaScript',    link: '#', weight: 85 },
+                { name: 'jQuery',        link: '#', weight: 121 },
+                { name: 'React.js',      link: '#', weight: 78 },
+                { name: 'Angular',       link: '#', weight: 62 },
+                { name: 'Express',       link: '#', weight: 82 },
+                { name: 'Sharepoint',    link: '#', weight: 10 },
+                { name: 'ASP.NET',       link: '#', weight: 15 },
+                { name: 'Vue.js',        link: '#', weight: 43 },
+                { name: 'Spring',        link: '#', weight: 36 },
+                { name: 'Django',        link: '#', weight: 32 },
+                { name: 'Flask',         link: '#', weight: 18 },
+                { name: 'Ruby onRails',  link: '#', weight: 14 },
+                { name: 'MongoDB',       link: '#', weight: 95 },
+                { name: 'Elasticsearch', link: '#', weight: 40 },
+                { name: 'MySql',         link: '#', weight: 58 },
+                { name: 'PostgreSQL',    link: '#', weight: 50 },
+                { name: 'Microsoft SQL Server', link: '#', weight: 48 },
+                { name: 'SQLite',        link: '#', weight: 45 },
+                { name: 'Redis',         link: '#', weight: 41 },
+                { name: 'Oracle 9i',     link: '#', weight: 39 },
+                { name: 'Node.js',       link: '#', weight: 70 },
+                { name: '.NET',          link: '#', weight: 38 },
+                { name: 'WCF',           link: '#', weight: 16 },
+                { name: 'TensorFlow',    link: '#', weight: 24 },
+                { name: 'Ansible',       link: '#', weight: 16 },
+                { name: 'Flutter',       link: '#', weight: 15 },
+                { name: 'TypeScript',    link: '#', weight: 37 },
+                { name: 'Java',          link: '#', weight: 42 },
+                { name: 'Python',        link: '#', weight: 58 },
+                { name: 'C',             link: '#', weight: 28 },
+                { name: 'C++',           link: '#', weight: 36 },
+                { name: 'C#',            link: '#', weight: 25 },
+                { name: 'Go',            link: '#', weight: 18 },
+                { name: 'PHP',           link: '#', weight: 12 },
+                { name: 'VBA',           link: '#', weight: 10 }
+            ]
+        }
+        $('#demoCloud2').tagCloud(options);
+    });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+/* Estilo de cores personalizadas para o topo e barra principal */
+
+:root {
+  --topo-background: #2b414b;
+  --topo-text: white;
+  --barra-background: #3a4d56;
+  --barra-text-color: white;
+  /* --barra-text-background: brown; */
+  --barra-text-hover-color: #7FDBFF;
+  --barra-text-hover-background: #3a4d56;
+  --barra-border-top: #586e78;
+  --barra-border-bottom: #586e78;
+  --barra-border-right: white;
+  --barra-border-left: white;
+}
+
+div.topo-color, span.topo-color {
+  background-color: var(--topo-background) !important;
+  color: var(--topo-text) !important;
+}
+
+a.topo-color {
+  color: var(--topo-text) !important;
+}
+
+div.barra {
+  color: var(--barra-text-color) !important;
+  background-color: var(--barra-background) !important;
+  border-right-color: var(--barra-border-right) !important;
+  border-left-color: var(--barra-border-left) !important;
+  border-top: 2px solid var(--barra-border-top) !important;
+  border-bottom: 2px solid var(--barra-border-bottom) !important;
+}
+
+.td-barra {
+  padding: 5px;
+  color: var(--barra-text-color) !important;
+  /* background-color: white !important; */
+}
+
+.td-barra:hover {
+  color: var(--barra-text-hover-color) !important;
+  background-color: var(--barra-text-hover-background) !important;
+}
+
+a.barra-selected {
+    color: var(--barra-text-hover-color) !important;
+    background-color: var(--barra-text-hover-background) !important;
+}
+
+.td-barra-right {
+  /* float: inline-end !important; */
+  color: var(--barra-text-color) !important;
+}
+
+.login-screen {
+  /* background-color: #D1D4DB; */
+  background-image: url('../imgs/login-background.jpg') !important;
+  background-size: cover !important;
+  /* height: 100vh !important; */
+}

@@ -1,0 +1,27 @@
+{
+  "name": "jquery.tagcloud",
+  "title": "jQuery Tag Cloud",
+  "description": "jQuery plugin for tag cloud, showing bigger tags in the center",
+  "keywords": [
+    "jquery-plugin",
+    "tag-cloud",
+    "tags"
+  ],
+  "version": "1.2.0",
+  "author": {
+    "name": "Peter Thoeny",
+    "url": "https://github.com/peterthoeny"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://opensource.org/licenses/mit-license"
+    }
+  ],
+  "bugs": "https://github.com/peterthoeny/jquery.tagcloud/issues",
+  "homepage": "https://github.com/peterthoeny/jquery.tagcloud",
+  "repository": "https://github.com/peterthoeny/jquery.tagcloud",
+  "dependencies": {
+    "jquery": ">=1.4"
+  }
+}

@@ -1,0 +1,571 @@
+# OcoMon 5.0x 
+Lançamento oficial no final de Junho de 2023
+
+Versão anterior: 4.0.x
+
+É possível ter uma ideia sobre algumas das novidades assistindo aos seguintes vídeos:
+
+- Vídeo 1: https://www.youtube.com/watch?v=sKmXUgIWQv4
+- Vídeo 2: https://www.youtube.com/watch?v=x_avzu8G-F4
+- Vídeo 3: https://www.youtube.com/watch?v=c1ZdWIu5Vm0
+- Vídeo 4: https://www.youtube.com/watch?v=OLntu6B0sLo
+
+
+
+## Instruções:
+
+### Importante:
+
+Para permitir a auto aprovação e avaliação automática dos atendimentos é necessário adicionar a seguinte linha no crontab:
+
+```
+    * * * * * /usr/local/bin/php /var/www/html/ocomon-root-dir/ocomon/service/update_auto_approval.php
+    
+```
+Onde:
+ 
+	"/usr/local/bin/php" é o caminho para o executável do PHP (altere de acordo com o seu ambiente)
+	
+	"/var/www/html/ocomon-root-dir/ocomon/service/update_auto_approval.php" é o caminho para o script que faz a verificação (altere de acordo com o seu ambiente)
+
+
+## Requisitos da versão
+
++ MySQL a partir da versão 5.6 (Ou MariaDB a partir da versão 10.2)
++ PHP a partir da versão 7.4
+    - Módulos do PHP: PDO, pdo_mysql, curl, gd, openssl, ldap, mbstring
+    
+    
+## Principais macro novidades
+
++ Criação da entidade de Cliente;
++ Formulários dinâmicos para abertura de chamados;
++ Aprovação/Rejeição e avaliação dos atendimentos;
++ Gerência de múltiplas áreas;
++ Encaminhamento/Agendamento diretamente para um ou mais operadores;
++ Calendário de chamados;
++ Módulo de inventário reestruturado para permitir o gerenciamento de qualquer tipo de bem durável, com diferentes estruturas e configurações;
++ Muitas melhorias e correções..
+
+
+
+
+## Ocorrências
+### Novo campo padrão: Cliente 
+Na prática será uma nova forma de agrupamento e separação dos chamados no sistema; Agrupando usuários, unidades e departamentos.
+    
+Afeta todos os relatórios, consultas e painel de controle;
+
+### Formulários dinâmicos
+Aplicável no processo de abertura de chamados, essa funcionalidade permite definir um tipo específico de formulário para cada tipo de solicitação, de acordo com o que for relevante para cada caso;
+
+### Aprovação e avaliação dos chamados
+    
+Agora o usuário solicitante pode validar ou rejeitar a conclusão do atendimento bem como realizar a sua avaliação; 
+    
+Após aprovado, o solicitante deverá selecionar uma das seguintes opções de avaliação: Ótimo, Bom, Regular ou Ruim.
+
+Caso o atendimento seja rejeitado, o chamado voltará para a fila de atendimento assumindo o status configurado para este fim. O chamado poderá ir para a fila direta do operador responsável ou para a fila aberta, dependendo da configuração do status para chamados rejeitados. Definição em Admin > Configurações gerais > Configurações básicas :: Status para rejeitados.
+    
+Mesmo chamados abertos por e-mail ou via formulário sem autenticação poderão ser avaliados pelo solicitante (via url gerada com nova variável ambiente "%rating_url%", que só poderá ser utilizada no contexto do email enviado para o contato do solicitante no ato da conclusão do chamado e também no novo evento "Solicitação de aprovação/avaliação" que será disparado no ato da conclusão do atendimento);
+    
+O sistema permite a configuração de prazo para a realização da aprovação e avaliação. Chamados fora do prazo serão auto-aprovados e auto-avaliados (a avaliação a ser recebida deverá ser configurada via painel de administração);
+
+### Novas guias/seções:
+    
+- Pendentes de aprovação (em Home > Meus Chamados): Guia que será exibida sempre que houver chamados aguardando aprovação/avaliação pelo usuário logado;
+    
+- Agendados para mim (em Home > Meus Chamados): Guia que listará os chamados que estiverem agendados diretamente para a fila do operador logado;
+    
+- Áreas Geridas (em Home): Com a capacidade de gerência de múltiplas áreas, a opção que era "Minha Área", agora é "Áreas Geridas", trazendo informações sobre os chamados das áreas sob gerência do usuário logado; Para operadores que não forem gerentes, a opção "Minha Área" continua existindo, e exibe apenas as informações sobre os chamados da área primária do usuário;
+    
+### Árvore de chamados
+Acessível por meio do menu "Home") foi re-escrita para permitir até 5 níveis, encadeáveis e selecionáveis, de agrupamentos. Na versão anterior, o agrupamento era fixo por área de atendimento e status. 
+
+Também é possível definir se o carregamento das listagens fará o cálculo de SLAs ou não, possibilitando menor tempo de resposta na exibição das listagens. 
+
+Além disso, o layout também foi modificado, melhorando a experiência de uso.
+
+### Impressão para atendimento
+Agora é possível selecionar os campos que serão impressos;
+
+Também é possível selecionar campos personalizados para a impressão;
+
+
+    
+### Calendário de chamados
+Nova opção no menu de ocorrências. Apresenta o calendário de chamados abertos, concluídos e agendados.
+
+Possíveis filtros:
+- Cliente;
+- Área de atendimento;
+- Operadores;
+    
+
+### Filtro avançado:
+    
+- Filtro por clientes;
+    
+- Filtro por avaliação dos atendimentos;
+    
+- Filtro sobre atendimentos rejeitados
+    
+- Novas colunas no retorno das consultas: 
+        
+	- Avaliação do atendimento;
+        
+	- Rejeições (traz a quantidade de rejeições de cada chamado retornado no filtro)
+        
+	- SLA Resposta: coluna textual, permitindo a sua impressão (pois os leds da coluna padrão "SLAs" não são imprimíveis);
+        
+	- SLA Solução: coluna textual, permitindo a sua impressão (pois os leds da coluna padrão "SLAs" não são imprimíveis);
+        
+	- Tempo filtrado de duração do atendimento (contabilizado a partir da primeira resposta ao chamado);
+        
+	- Tempo absoluto de duração do atendimento (contabilizado a partir da primeira resposta ao chamado);
+        
+	- Descrição Técnica: Descrição técnica fornecida pelo operador no ato da conclusão do atendimento;
+        
+	- Solução: Descrição da solução adotada, fornecida pelo operador no ato da conclusão do atendimento;
+        
+	- Operador(es): Exibe o operador/operadores vinculados ao chamado;
+    
+- Agora é possível memorizar, para consultas futuras, tanto as colunas visíveis quanto a sua posição. Ou seja, não é mais necessário repetir as configurações de exibição a cada nova consulta. Essa opção também está disponível nas listagens retornadas pelos cards, no painel de controle;
+
+- Agora, ao gerenciar as colunas, a seleção aparece em 4 colunas (não mais em uma única), facilitando a operação; Esse comportamento também está disponível em qualquer das listagens do sistema onde seja possível gerenciar as colunas;
+
+- Agora é possível decidir se o retorno da pesquisa renderizará todos os campos customizados ou apenas campos específicos. Essa ação é importante nos casos em que existam muitos campos personalizados, gerando bastante processamento para montar a tabela resultante (mesmo que as colunas estejam ocultas, elas sempre são renderizadas).
+    
+- Na opção de exportação para PDF, agora a impressão vem com a logomarca;
+
+### Painel de controle:
+- Foi adicionado o filtro por cliente;
+
+- Tammbém é possível definir se os campos customizados devem ser renderizados nas listagens retornadas pelos cards. 
+    
+- Novo card: Aguardando avaliação.
+
+	Retorna a listagem de chamados com atendimento concluído e que aguardam avaliação por parte do solicitante. A listagem retornada é limitada aos filtros e às áreas que o operador logado faz parte (dependendo da configuração relacionada à visibilidade entre áreas).
+    
+- Novos gráficos:
+        
+	- Agendados para Operadores: traz a informação de chamados agendados e encaminhados para a fila direta de operadores;
+        
+	- Chamados em aberto por cliente: traz a informação de chamados em aberto no sistema, agrupados por cliente;
+        
+	- Quadro geral por clientes no mês atual: traz um resumo dos chamados abertos e encerrados no mês corrente para cada cliente;
+        
+	- Chamados por cliente nos últimos meses: traz o total de chamados abertos nos últimos 4 meses, agrupados por clientes;
+        
+	- Chamados Encerrados por Cliente nos últimos meses: traz o total de chamados concluídos nos últimos 4 meses, agrupados por clientes;
+        
+	- Avaliação dos chamados no mês atual: traz as informações de acordo com as avaliações recebidas pelos atendimentos no mês corrente;
+
+### Relatórios
+    
+- O relatório "Atendimentos por técnico" agora considera também os operadores auxiliares envolvidos com o atendimento;
+    
+- Novo relatório: "Encerramentos por técnico (responsável)", que considera apenas o operador responsável pelo atendimento;
+    
+- Novo relatório: "Quadro de chamados por cliente";
+    
+- Novo relatório: "Quadro geral de Chamados por Área de Atendimento", que traz informações gerais sobre os chamados do período e inclui as avaliações;
+    
+- Novo relatório: Avaliação dos chamados
+   
+- A tela de consulta de cada relatório agora memoriza os dados fornecidos no filtro, como: Cliente, Área, Período.. Dessa forma não é necessário redefinir todos os campos do filtro a cada nova consulta de relatório;
+
+### Diversos
+- A função de campos personalizados com máscara de preenchimento agora funciona também no formulário de abertura de chamados sem autenticação;
+
++ Formulários de abertura agora podem ter definidos campos customizados que estarão presentes nas telas de detalhes e edição dos chamados mas ocultos no formulário de abertura; 
+
++ Novas informações/opções acessíveis pela tela de detalhes dos chamados:
+    
+    - Agora, na maioria das situações, haverá uma mensagem informativa, logo abaixo do menu de opções, sobre o estado corrente do chamado visualizado.
+    
+    - Novo campo: Cliente; 
+    
+    - Avaliação do atendimento (quando concluído); 
+    
+    - Operadores auxiliares (quando aplicável)
+    
+    - Tempo do atendimento (quando concluído)
+    
+    - Agora na janela que traz as informações de SLA, há também a informação do tempo de duração do atendimento (filtrado e absoluto), contabilizado a partir da primeira resposta;
+    
+    - A função "Agendar" agora é "Agendar/Encaminhar" e permite tanto o agendamento clássico quanto o agendamento ou encaminhamento diretamente para a fila de um ou mais operadores. Nessa tela também é possível ter acesso direto ao calendário de agendados, possibilitando a avaliação sobre eventuais conflitos de agenda.
+
++ Chamados concluídos ou encerrados não podem mais ser editados ou receberem informações do solicitante;
+
++ Aprimoramento do controle de acesso à chamados de outras áreas de atendimento;
+	
+	- Agora, operadores não conseguem editar/encerrar chamados que não sejam de suas próprias áreas de atendimento;
+	
++ Agora, operadores responsáveis pelos chamados, podem inserir comentários sem precisar editar a ocorrência. Da mesma forma como usuários de nível somente abertura;
+
++ Na pesquisa na base de soluções, agora é possível marcar ou não se a consulta deve buscar também nos comentários (assentamentos) dos chamados;
+
++ A busca por soluções agora traz os resultados paginados;
+    
+### Correções
+    
+- Abertura de chamados por e-mail: Em alguns casos, o sistema não conseguia mover a mensagem da caixa de entrada, apenas copiava, fazendo com que o sistema abrisse vários chamados para um mesmo email enviado.
+    
+- Na abertura de chamados, o usuário estava recebendo uma cópia do e-mail enviado para a área de atendimento;
+
+- A abertura de chamados por email não funcionava a partir da versão 8.1 do PHP em função da versão da biblioteca ddeboer/imap
+    
+- A busca por soluções estava com um bug que fazia com que os resultados viessem repetidos;
+    
+- Outro bug na busca por soluções era quando fosse clicado no número de chamado para ver seus detalhes, o sistema gerava erro interno (não exibido para o usuário) e não era possível fazer novas consultas sem recarregar o script;
+    
+- Na "Busca por número do chamado", sempre que se abrisse as informações do chamado retornado, a tela de consulta não funcionava mais para novas consultas (era necessário clicar no menu lateral novamente para realizar novas consultas);
+
+- Ajustadas diversas funções que geravam alertas do tipo "deprecated" com base no PHP 8.2;
+
+- A impressão de chamados não conseguia exibir os campos customizados dependendo das configurações e versão do PHP;
+    
+    
+
+## Inventário
+
+Possivelmente, nessa versão 5, o módulo de inventário foi a área do sistema que sofreu as maiores modificações estruturais. Saindo de um modelo que era limitado a uma estrutura fixa e específica de características cadastrais, para um modelo aberto e flexível, capaz de gerir qualquer tipo de ativo/bem durável com, praticamente, qualquer tipo de estrutura e configuração. 
+
+Como efeito colateral, algumas opções das versões anteriores foram descontinuadas. Isso significa que as opções, embora ainda acessíveis, não terão mais a função de registro, apenas a função de leitura das informações lá cadastradas. Na prática, a principal questão diz respeito aos "componentes avulsos" que na versão atual não terão mais função (uma vez que todos os itens serão cadastrados como "ativos"). Se você possui itens cadastrados como componentes avulsos, poderá cadastrá-los (manualmente) como ativos de inventário e então removê-los da base obsoleta de componentes avulsos.
+
+Outro ponto que está sendo revisto é sobre o cadastro de softwares. A intenção é também poder utilizar o cadastro de ativos para esse fim, utilizando-se de uma opção existente no cadastro de categorias de ativos, que identifica o tipo de ativo como sendo "digital" (mais informações no decorrer desse documento);
+
+Você pode ter uma visão prática sobre algumas das novas capacidades do módulo de inventário assistindo a esse vídeo: 
+
+- https://www.youtube.com/watch?v=c1ZdWIu5Vm0
+
+### Macro mudanças
++ Novo campo padrão: Cliente - Na prática será uma nova forma de agrupamento e separação dos ativos de inventário;
++ Campos customizados;
++ Características mensuráveis (características que podem ser medidas e comparadas);
++ Composição de ativos (ativo composto com outros ativos);
++ Controle de acesso aos itens de inventário das unidades com base na área primária do operador;
++ Registro de modificações de especificações;
++ Filtro avançado consegue pesquisar por campos customizados, Características diretas ou Características agregadas;
+
+
+### Opções do menu
+
+
+#### Início
+
+mantém a exibição da mesma forma como na versão anterior. No entanto, destaca que a seção sobre componentes avulsos (caso exista, atualizada de versões anteriores) será descontinuada.
+
+Agora ao clicar em qualquer tipo de ativo na primeira coluna, a listagem dos ativos do mesmo tipo aparece em uma janela popup, com capacidade de definição das colunas que devem ser visíveis, ordem de exibição e exportação das informações exibidas.
+    
+#### Consultas 
+    
+- Consulta rápida: Agora é possível limitar o filtro das unidades em função do filtro de clientes. As opções poderão estar limitadas caso exista configuração de limite de clientes e unidades a serem acessados pela área do operador logado (ver em "Áreas de Atendimento");
+        
+- Filtro avançado para ativos (antigo "Filtro para equipamentos"): filtro poderoso com capacidade de combinar diversos parâmetros de busca como características diretas e/ou agregadas do ativo e/ou campos customizados. 
+        
+	- Novos campos do filtro:
+        
+		- Cliente, Categoria do tipo do ativo, part-number
+        
+	- Novas seções do filtro:
+
+		- Características diretas: Dizem respeito às características que são definidas no modelo do ativo e que são assumidas como inerentes do ativo. Ex: Altura, largura, peso, potência, volume, etc.. Ou seja, qualquer característica que esteja relacionada ao modelo do ativo. Podem ser adicionado tantos filtros quanto necessários para combinar informações e limitar o escopo da busca.
+            
+		- Características agregadas: Dizem respeito às características das partes agregadas ao ativo principal. As partes agregadas possuem características próprias que podem servir de base para a consulta. Por exemplo: pesquisar por ativos que possuam SSD com capacidade de armazenamento superior à 256GB e menor do que 1TB (sim, é possível pesquisar com unidades de medidas diferentes). Outro exemplo: pesquisar por ativos que possuam motor elétrico, que a potência do motor seja maior do que 1,5hp e que o motor tenha um peso máximo de 10kg. É possível combinar quantos filtros forem necessário para ajustar o escopo da busca.
+            
+		- Campos customizados: Dizem respeito a características adicionadas aos ativos principais por meio de campos customizados. Por exemplo: NFC, 5G, Endereço MAC, IP, IMEI, cor, etc..
+            
+	- Colunas retornadas: Além das informações básicas diretas de cada ativo, também são exibidas colunas com as características do modelo e características agregadas (que podem ser também softwares, como veremos), além das colunas referentes aos campos customizados.
+	
+	- Agora é possível decidir se o retorno da pesquisa renderizará todos os campos customizados ou apenas campos específicos. Essa ação é importante nos casos em que existam muitos campos personalizados, gerando bastante processamento para montar a tabela resultante (mesmo que as colunas estejam ocultas, elas sempre são renderizadas).
+            
+- Filtro para componentes avulsos: Função descontinuada. A partir da versão 5 todos os itens de inventário serão "ativos", portanto, apenas o filtro avançado será o responsável pelas buscas;
+        
+- Histórico de localização: foi adicionado o campo para filtro de cliente a fim de limitar a exibição das unidades possíveis. Além disso, agora também exibe quem foi o autor da modificação (o autor só será exibido para modificações realizadas a partir da nova versão do sistema);
+        
+- Por Localização Anterior: foram adicionados campos de filtro para cliente e unidade para limitar a exibição dos departamentos possíveis.
+
+
+### Funções modificadas ou novas:
+    
+- Menu "Ativos de inventário" (antigo "Hardware"):
+	- Antes: "Equipamentos", agora: "Árvore de ativos": exibe a distribuição dos ativos de inventário com até 5 níveis de agrupamentos encadeáveis e selecionáveis (similar à árvore de chamados), desta forma é possível ter acesso às informações de ativos cadastrados com base no agrupamento de várias características similares entre os bens.
+    
+#### Cadastro de Ativos
+É o cadastro dos itens de inventário. É possível cadastrar praticamente qualquer tipo de bem durável, com diferentes estruturas e configurações.
+        
+- Fluxo padrão: 
+	1. Cadastro de campos personalizados (se aplicáveis) que serão utilizados pelo tipo de ativo;
+	2. Cadastro da categoria do ativo (em Inventário > Diversos > Categorias de ativos); 
+	3. Cadastro do tipo de ativo (em Inventário > Ativos de inventário > Tipos de Ativos); 
+	4. Criação do formulário para cadastro (na área de administração em Admin > Inventário > Formulários de cadastro de ativos); 
+	5. Cadastro de características mensuráveis (em Inventário > Diversos > Características mensuráveis), se aplicável; 
+	6. Cadastro do fabricante (em Inventário > Diversos > Fabricantes); 
+	7. Cadastro do modelo do ativo (em Inventário > Tipos de Ativos > Modelos de Ativos); 
+	8. Cadastro do ativo (em Inventário > Ativos de inventário > Cadastro de Ativos).
+            
+#### Componentes Avulsos
+Opção legada de versões anteriores. Essa opção será removida em versões futuras.
+    
+#### Tipos de Ativos
+Antigo "Tipos de equipamentos": Agora, no formulário de cadastro de tipos de ativos, é possível definir:
+- Categoria: é a categoria para classificação e agrupamento de tipos de ativos;
+- Pode ser um componente de: aplicável quando o tipo de ativo puder fazer parte de um ativo maior. Ex: um SSD pode ser um componente de um notebook;
+- Pode possuir componentes: aplicável quando o tipo de ativo puder possuir outros tipos de ativos: Ex: Um nobreak pode possuir baterias;
+- Perfil de cadastro: diz respeito ao qual formulário será utilizando para cadastro de ativos desse tipo.
+        
+#### Modelos de Ativos
+Antigo "Modelos de equipamentos": Agora, os modelos de ativos podem receber diversas informações de características diretas que possibilitam a comparação entre diferentes modelos. Nesse cadastro é possível definir:
+- Tipo: a mesma seleção que já existia na versão anterior;
+- Fabricante: na versão anterior, essa informação não era estruturada;
+- Modelo: descrição textual a respeito do modelo que se está cadastrando;
+- Característica: podem ser selecionadas diversas características mensuráveis como, por exemplo: peso, tensão, potência, altura, frequência, etc.. Cada modelo pode ter nenhuma ou várias características mensuráveis; Essas características poderão servir como filtro para ativos, por meio do filtro avançado para ativos;
+- Arquivo: mesma opção que já existia na versão anterior.
+        
+#### Modelos de Configuração
+Opção legada de versões anteriores. Essa opção será removida em versões futuras. Na versão 5, para salvar uma configuração basta clicar em um botão na tela de detalhes do ativo: "Salvar configuração física";
+    
+#### Tipos de Componentes
+Opção legada de versões anteriores. Essa opção será removida em versões futuras. Na versão 5, qualquer tipo de componente físico deve ser cadastrado por meio do menu: Cadastro de Ativos;
+    
+#### Modelos de Componentes
+Opção legada de versões anteriores. Essa opção será removida em versões futuras. Na versão 5, qualquer modelo de componente deve ser cadastrado por meio do menu: Modelos de Ativos;
+    
+#### Softwares
+Por ora, esse menu permanece como na versão anterior. No entanto, a intenção é removê-lo visto que agora é possível cadastrar softwares pelo próprio cadastro de ativos. Uma vez que se cadastre o tipo do ativo em alguma categoria marcada como "Digital" (veja na seção Inventário > Diversos > Categorias de Ativos), ele poderá ser vinculado aos equipamentos e aparecerá em uma seção distinta das informações de hardwares agregados.
+    
+#### Diversos
+Nesta seção foram adicionadas duas novas opções:
+
+- Características mensuráveis 
+	
+	São informações capazes de serem comparadas por meio de alguma unidade de medida. Essas informações podem compor o modelo de um ativo de inventário (características diretas) ou compor os modelos de ativos que estão agregados ao ativo principal (características agregadas).
+	
+	Por padrão, o sistema já traz diversos tipos de características cadastradas, como por exemplo: Carga elétrica, peso, armazenamento, altura, frequência, etc..
+
+	É possível cadastrar qualquer tipo de característica que possa ser mensurada, bastando definir a unidade de medida de referência e o fator de comparação. 
+	  
+	Exemplo: característica "armazenamento", unidade de medida de referência (fator de comparação = 1): Megabyte. Ao se cadastrar a unidade de medida Gigabyte, é necessário informar o fator de comparação equivalente para transformar a unidade de referência (nesse caso, Megabyte) em 1 Gigabyte, ou seja, multiplicar por 1024 (fator de comparação: 1024, operação: multiplicar). Na dúvida, baseie-se nas características já cadastradas para compreender o processo.
+	
+	Esses fatores de comparação são utilizados para comparar ativos cadastrados com características de diferentes unidades. 
+	
+	Exemplo: é possível comparar um SSD que foi cadastrado como tendo armazenamento de 512GB com um SSD que foi cadastrado com armazenamento de 1TB. Ou seja, mesmo cadastrados com unidades diferentes (GB e TB), o sistema saberá reconhecer qual possui maior capacidade de armazenamento.
+            
+- Categorias de Ativos
+ 
+	As categorias permitem um agrupamento e classificação dos ativos em função de características similares (É possível agrupar os ativos por categoria diretamente na árvore de ativos em Inventário > Ativos de inventário > Árvore de ativos ou filtrar por categoria no filtro avançado).
+	
+	Ao se cadastrar uma categoria, é possível defini-la como sendo "Digital", dessa forma, o sistema entenderá que tipos de ativos que estiverem nessa categoria não serão físicos, e sim softwares, licenças, etc..
+
+	Também é possível definir uma categoria como sendo "Recurso alocável". Por ora, essa definição ainda não traz consequências práticas no sistema, no entanto, a intenção é possibilitar que ativos com esse tipo de categoria possam ser utilizados como recursos/suprimentos/produtos "alocáveis" vinculados aos chamados.
+            
+	- Perfil de cadastro
+
+		Diz respeito ao formulário que será carregado para cadastro de tipos de ativos que sejam dessa categoria. É possível montar formulários com campos específicos (em Admin > Inventário > Formulários de cadastro de ativos), customizados (em Admin > Campos customizados) ou não.
+            
+	Também é possível definir uma cor de fundo e cor da fonte para quando forem exibidas etiquetas informativas sobre a categoria do tipo de ativo.
+            
+#### Estatísticas e relatórios
+
+De modo geral, as opções presentes de relatório nesse menu não sofreram grandes alterações, na verdade, algumas estão marcadas como "descontinuadas" pois serão removidas em uma versão futura. Em outras, foi adicionado o campo de filtro "Cliente".
+        
+Foi adicionado o relatório "Ativos por Características diretas", onde é possível definir uma característica específica para monitoramento. 
+
+
+
+
+## Administração
+
+### Configurações básicas
+    
+- Adicionada a seção "Encerramento de chamados":
+        
+	- Definição do status para atendimentos concluídos (atendimento concluído pelo operador técnico mas ainda não encerrado no sistema em função de estar aguardando a aprovação pelo solicitante);
+        
+	- Definição do status para atendimentos rejeitados (atendimento concluído pelo operador técnico mas o solicitante não concorda que o problema tenha sido solucionado);
+        
+	- Tempo máximo para validação e avaliação do atendimento: definição do prazo, em dias, para que o solicitante realize a aprovação (ou rejeição) do atendimento recebido, além de realizar a avaliação do mesmo. É possível definir que o tempo limite não considere os finais de semana;
+	
+		- Para desabilitar a necessidade de validação/avaliação do atendimento deve-se configurar o tempo máximo para "0" (zero);
+        
+	- Avaliação automática: definição sobre qual avaliação o atendimento deverá receber, de forma automática, para os casos onde a avaliação não ocorra dentro do prazo definido;
+        
+- Novas opções na seção "Agendamento / encaminhamento de chamados" (antiga "Agendamento de chamados"):
+        
+	- Status para chamados agendados para operadores: será o status que o chamado receberá quando o chamado for agendado para a fila direta de um ou mais operadores;
+        
+	- Status para retorno na fila: Status para chamados agendados e reservados para operadores específicos quando atingirem a data programada para o atendimento;
+        
+	- Status definido para os chamados encaminhados na abertura: Essa opção já existia na versão 4 e agora está agrupada nessa seção;
+        
+	- Marca primeira resposta ao agendar/encaminhar?: Define o comportamento do sistema quanto à marcação da primeira resposta durante a ação de encaminhamento/agendamento de chamados;
+        
+- Reabertura de chamados:
+        
+	- Agora é possível definir um status de retorno para fila, embora, com a nova funcionalidade de aprovação de chamados, essa opção só faça sentido para chamados abertos e encerrados pelo mesmo operador (que nesse caso não poderá aprovar/avaliar o próprio chamado);
+        
+- Upload de arquivos:
+        
+	- Agora a definição do tamanho máximo de arquivos está em MB (ainda limitado ao tamanho máximo de 10MB);
+        
+Em todas as seções, onde há a definição de algum tipo de status, agora são exibidas as informações sobre o tipo de fila configurada e também sobre a parada de relógio relacionado à cada status, facilitando a compreensão do comportamento do sistema já na seleção do status;
+        
+### Configurações estendidas:
+    
+- Nas configurações para LDAP, é possível definir um cliente para que o usuário seja vinculado a partir do primeiro acesso;
+    
+- Na seção referente às configurações de chamados abertos por email, na entrada dos chamados na fila, é possível definir um cliente padrão que estará vinculado aos chamados abertos por esse meio;
+    
+- Na seção de configuração para chamados abertos sem autenticação, também é possível definir um cliente padrão que será vinculado aos chamados abertos por esse meio;
+
+
+### Email - Mensagens padrão
+    
+Na listagem dos modelos de mensagens, houve melhorias na exibição das informações referentes a cada evento, ficando mais fácil identificar quando cada mensagem é aplicada;
+    
+Novos modelos (em alguns casos, há mais de um modelo com a mesma nomenclatura, no entanto, com aplicação em situações distintas):
+        
+- Agendamento: email enviado para o operador quando o chamado for agendado diretamente para a fila do operador;
+        
+- Rejeição: email enviado para a área responsável pela conclusão do atendimento quando a mesma for rejeitada pelo solicitante;
+        
+- Rejeição: email enviado para o operador responsável pela conclusão do atendimento quando a mesma for rejeitada pelo solicitante;
+        
+- Solicitação de aprovação/avaliação: email enviado para o solicitante sempre que um atendimento for concluído.
+        
+### Áreas de atendimento:
+    
+- Na listagem de áreas, agora há a coluna referente à configuração de abertura dinâmica. 
+    
+- A opção de "Abertura dinâmica" define se o formulário de abertura de chamados funcionará no modo clássico (onde o formulário de abertura é carregado em função da área primária do usuário logado) ou funcionará no modo dinâmico (nesse caso, é apresentada primeiro a opção de seleção de tipo de solicitação, que definirá qual será a área que receberá o chamado e qual será o formulário de abertura);
+    
+- Na definição de "módulos de acesso", ao habilitar o módulo de inventario é possível a limitar o acesso a clientes e unidades específicas. Essa configuração não terá efeito sobre usuários administradores;
+    
+- Na definição de gerentes para a área, agora é possível selecionar usuários de outras áreas (desde que de mesmo nível), já que um usuário pode ser gerente de múltiplas áreas; No caso de área que presta atendimento, apenas operadores que façam parte da área poderão ser definidos como gerentes;
+    
+- Na definição das áreas para as quais a área selecionada poderá abrir chamados, agora é necessário definir uma das áreas como sendo padrão. Essa opção será considerada no algoritmo da abertura dinâmica para quando o tipo de solicitação não tiver uma área padrão definida para seu atendimento;
+    
+
+### Formulários de abertura
+Antigo "Perfis de tela de abertura".
+    
+- Na definição de campos customizados, agora é possível definir campos que farão parte do formulário apenas nas telas de edição e detalhes das ocorrências, ou seja, não serão exibidos no formulário de abertura;
+    
+- Também é possível definir campos personalizados que nunca devem ser exibidos para o usuário final;
+    
+- Definição do formulário de abertura padrão (para casos quando a abertura dinâmica estiver habilitada mas o formulário não estiver defnido no tipo de solicitação); 
+
+- Nova coluna na tela de administração de formulários de abertura mostrando para quais tipos de solicitação cada perfil está vinculado (quando a abertura dinâmica estiver habilitada);
+
+- Agora é possível configurar para que o campo de upload de arquivos, na tela de abertura, seja de preenchimento obrigatório;
+    
+    
+### Obrigatoriedade de campos
+Adicionado o campo "Cliente" como opção de obrigatoriedade de preenchimento nas telas de edição e conclusão do atendimento;
+
+### Tipos de Solicitações
+Antigo "Tipos de Problemas".
+    
+- Na definição da área de atendimento, quando forem definidas, especificamente, mais de uma área, é necessário definir uma como sendo a área padrão. Essa informação será considerada para a definição de que área receberá o chamado quando a abertura dinâmica estiver habilitada.
+    
+- Formulário de abertura de chamados: vinculação do tipo de solicitação a algum formulário de abertura. O formulário vinculado será carregado quando a área do solicitante estiver configurada para "Abertura dinâmica" e o tipo de solicitação for selecionado durante o processo de abertura de chamados;
+    
+    
+### Tipos de Status
+Agora há a opção de definir status como "Ignorado". Funciona como um tipo de "arquivamento". Chamados com status definidos como "ignoráveis" não serão considerados em nenhuma consulta geral e também em relatórios. Só poderão ser recuperados caso seja feita uma busca direta pelo seu número ou pelo seu status. 
+    
+
+### Formulários de cadastro de ativos
+Funciona como os formulários de abertura (no módulo de ocorrências). Aqui são definidos os campos que aparecerão nos formulários de cadastro dos ativos de acordo com os tipos de ativos. Vários tipos de ativos podem compartilhar um mesmo formulário ou terem um formulário específico para cada caso.
+    
+### Clientes
+Possibilita a administração (cadastro, exibição, edição e exclusão) de clientes;
+	
+- Na prática é uma nova forma de agrupamento e separação tanto dos chamados quanto dos ativos de inventário no sistema; Agrupando usuários, unidades e departamentos.
+    
+- Por padrão, o sistema traz dois clientes ativos: Operação e Cliente solicitante. 
+        
+	- O cliente "Operação" é reservado para agregar todos os usuários de nível de operação e administração do sistema. Representa a própria organização que presta os serviços. Esse cliente não pode ser excluído do sistema mas pode ser renomeado e editado à vontade.
+        
+	- O cliente "Cliente solicitante": representa qualquer cliente solicitante (agrupamento de usuários de nível "somente-abertura"). Pode ser apenas um ou diversos.
+        
+- Um cliente pode agrupar vários usuários;
+        
+- Um cliente pode agrupar várias unidades e por consequência, agrupar vários departamentos (nessa versão, os departamentos podem ser vinculados às unidades);
+    
+- O formulário para cadastro e gerenciamento de clientes suporta a utilização de campos personalizados;
+    
+- Tipos de clientes: qualquer classificação que se queira utilizar para o agrupamento. Ex: Locação, Comodato, etc..
+    
+- Status de cliente: qualquer classificação que se queira utilizar para o agrupamento. Ex: Vigente, Pendente, etc..
+    
+### Unidades
+A partir da versão 5, a figura das unidades passou a ter maior importância na organização das informações do sistema. Uma unidade pode ser entendida como uma identificação para uma localização física, contendo diversos departamentos como seções dessa localização. 
+
+O gerenciamento de unidades passou para o menu de clientes e agora possui um campo para a realização desse vínculo: Cliente
+    
+### Departamentos
+O gerenciamento de departamentos passou para o menu de clientes e agora possui campos para a vinculação com o cliente por meio da unidade;
+    
+Prédios, reitorias e domínios de rede: todos esses entes agora também são vinculados à clientes por meio das unidades;
+    
+### Centros de Custo
+O gerenciamento de centros de custos passou para o menu de clientes e agora possui campo para a vinculação direta com o respectivo cliente;
+
+    
+### Campos customizados
+Essa opção saiu do menu de ocorrências pois agora suporta a criação de campos para serem utilizados também no módulo de inventário e no cadastro de clientes;
+    
+Os campos do tipo "Área de texto" agora são renderizados utilizando a linha toda do formulário (antes ocupava apenas uma coluna, como os demais campos);
+
+
+### Usuários
+    
+- Agora os usuários são vinculados a clientes. Usuários operadores e administradores sempre estarão vinculados ao cliente reservado "Operação" (esse nome pode ser alterado no painel de administração de Clientes). Usuários de nível "somente abertura", deverão ser vinculados a qualquer cliente exceto o "Operação";
+    
+- Agora é possível definir que usuários sejam gerentes de múltiplas áreas:
+        
+- Usuários de nível "somente abertura" só poderão ser gerentes de áreas de nível somente abertura (que não prestam atendimento);
+        
+- Usuários de nível de operação ou administradores só poderao ser gerentes de áreas que façam parte (área primária e secundárias);
+    
+- Novas opções:
+        
+	- Pode encaminhar: Opção disponível apenas para usuários operadores. Indica que o operador poderá encaminhar chamados diretamente para a fila direta de outro operador, seja no processo de abertura ou por meio da opção "Agendar/Encaminhar" (disponível na tela de detalhes dos chamados);
+        
+	- Pode receber: Opção disponível para usuários operadores e administradores. Indica que o operador/administrador poderá receber encaminhamentos de chamados em sua fila direta de chamados (também podem ser chamados agendados para a fila direta do operador/administrador);
+        
+	- Cor de fundo: Será a cor de fundo para eventos específicos do usuário quando aparecerem no calendário de agendados;
+        
+	- Cor da fonte: será a cor da fonte para eventos específicos do usuário quando aparecerem no calendário de agendados;
+    
+- Na listagem de usuários, agora há uma coluna informando o cliente ao qual o usuário está vinculado. Além disso, a coluna "Gerente" lista todas as áreas que estão sob gerência de cada usuário (quando aplicável);
+    
+
+## Correções/ajustes diversos
++ Agora a tela de login também se adapta à telas com resoluções altas;
+    
+
+## Nomenclaturas alteradas
+
+- Antes: Tipos de problemas -> Agora: Tipos de solicitações
+
+- Antes: Tipos de equipamentos -> Agora: Tipos de Ativos
+
+- Antes: Assentamentos -> Agora: Comentários
+
+- Antes: Perfis de tela de abertura -> Agora: Formulários de abertura
+
+
+## Pendências conhecidas
+
++ Campos customizados não gravam histórico de modificações;
+
++ Na API de integração, não é possível enviar arquivos como anexos na criação e também não é possível obter os anexos existentes via o método de leitura;
+
++ A abertura de chamados por e-mail não suporta a inclusão de anexos;
+
+
+---

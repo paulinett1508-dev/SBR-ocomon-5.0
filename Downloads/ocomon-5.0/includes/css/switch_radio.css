@@ -1,0 +1,154 @@
+
+:root {
+  --color-great: #2D962D;
+  --color-good: #0074D9;
+  --color-regular: #FF851B;
+  --color-bad: #DA2D2D;
+  --color-not-rated: #8d9697;
+  --color-to-rate: #FF851B;
+
+  --color-great-light: #8ab385;
+  --color-good-light: #80b4b4;
+  --color-regular-light: #ffa95f;
+  --color-bad-light: #c49286;
+}
+
+
+
+.switch-field {
+  display: flex;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.switch-field input:not([type='checkbox']) {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field label {
+  background-color: #e4e4e4;
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  padding: 8px 16px;
+  margin-right: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1); */
+  transition: all 0.1s ease-in-out;
+}
+
+/* .switch-field label:hover {
+  cursor: pointer;
+} */
+
+.switch-field input:not(:disabled) ~ label:hover  {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label {
+  background-color: #0074D9;
+  color: white;
+  box-shadow: none;
+}
+
+.switch-field input:checked:disabled + label {
+  background-color: #8a9bac;
+  color: white;
+  box-shadow: none;
+}
+
+.switch-field input:last-of-type:checked + label {
+  background-color: #d2322d;
+  color: white;
+  box-shadow: none;
+}
+
+.switch-field input:last-of-type:checked:disabled + label {
+  background-color: #a78483;
+  color: white;
+  box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+  border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+  border-radius: 0 4px 4px 0;
+}
+
+.color-great {
+  background-color: var(--color-great) !important;
+  font-size: 18px !important;
+}
+.color-good {
+  background-color: var(--color-good) !important;
+  font-size: 18px !important;
+}
+.color-regular {
+  background-color: var(--color-regular) !important;
+  font-size: 18px !important;
+}
+.color-bad {
+  background-color: var(--color-bad) !important;
+  font-size: 18px !important;
+}
+
+.color-not-rated {
+  background-color: var(--color-not-rated) !important;
+  font-size: 18px !important;
+}
+
+.color-to-rate {
+  background-color: var(--color-to-rate) !important;
+  font-size: 18px !important;
+}
+
+.switch-bt-selected {
+  font-size: 18px !important;
+}
+
+.switch-bt-regular {
+  font-size: 14px !important;
+}
+
+
+.switch-field > .multi-switch label {
+  border-radius: 4px !important;
+}
+
+.switch-field > .multi-switch input:not(:checked) + label.color-great {
+  background-color: var(--color-great-light) !important;
+  /* background-color: #55cc55 !important; */
+  color: white;
+  box-shadow: none;
+  font-size: 14px !important;
+}
+
+.switch-field > .multi-switch input:not(:checked) + label.color-good {
+  background-color: var(--color-good-light) !important;
+  color: white;
+  box-shadow: none;
+  font-size: 14px !important;
+}
+
+.switch-field > .multi-switch input:not(:checked) + label.color-regular {
+  /* background-color: #c49a4d !important; */
+  background-color: var(--color-regular-light) !important;
+  color: white;
+  box-shadow: none;
+  font-size: 14px !important;
+}
+
+.switch-field > .multi-switch input:not(:checked) + label.color-bad {
+  background-color: var(--color-bad-light) !important;
+  color: white;
+  box-shadow: none;
+  font-size: 14px !important;
+}
