@@ -63,6 +63,14 @@ if (!valida(TRANS('FIELD_USER'), $data['user'], 'MAIL', 1, $ERRO) && !valida(TRA
 $authType = getConfigValue($conn, 'AUTH_TYPE');
 $authType = (!empty($authType) ? $authType : 'SYSTEM');
 
+// GOOGLE_OAUTH: autenticação é feita exclusivamente via oauth_callback.php
+// Este endpoint (auth_process.php) não é chamado no fluxo OAuth.
+if ($authType === 'GOOGLE_OAUTH') {
+    $data['success'] = false;
+    $data['message'] = message('info', '', TRANS('USE_GOOGLE_LOGIN'), '');
+    echo json_encode($data);
+    return false;
+}
 
 if ($authType == "SYSTEM") {
 

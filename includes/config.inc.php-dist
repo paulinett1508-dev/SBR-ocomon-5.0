@@ -1,44 +1,74 @@
 <?php
 
 // arquivo: config.inc.php
+// Copiar este arquivo para config.inc.php e preencher com os valores reais.
+// NUNCA commitar config.inc.php (está no .gitignore).
 
-// configurar de acordo com as suas necessidades
+// ============================================================
+// SUPABASE — Banco de Dados (PostgreSQL)
+// ============================================================
 
-// Configurações vitais
+// Credenciais do Supabase Session Pooler (Transaction mode, porta 5432)
+// Painel Supabase → Project Settings → Database → Connection string → PHP PDO
+define("SQL_SERVER",  "aws-0-REGION.pooler.supabase.com"); // ex: aws-0-us-east-1.pooler.supabase.com
+define("SQL_PORT",    "5432");
+define("SQL_DB",      "postgres");
+define("SQL_USER",    "postgres.SEU_PROJECT_REF");    // ex: postgres.abcdefghijklmnop
+define("SQL_PASSWD",  "SUA_SENHA_SUPABASE");
 
-//Usuario do banco
-define("SQL_USER", "ocomon_5"); //NOME DO USUÁRIO PARA ACESSAR A BASE DO OCOMON - ESSE USUÁRIO É CRIADO AUTOMATICAMENTE NA INSTALACAO DO SISTEMA!!
+// Chaves do projeto Supabase
+// Painel Supabase → Project Settings → API
+define("SUPABASE_URL",         "https://SEU_PROJECT_REF.supabase.co");
+define("SUPABASE_ANON_KEY",    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SEU_ANON_KEY");
+define("SUPABASE_SERVICE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.SUA_SERVICE_KEY"); // ⚠️ Nunca expor no frontend
+define("SUPABASE_JWT_SECRET",  "SEU_JWT_SECRET"); // Painel Supabase → Project Settings → API → JWT Settings
 
-//Senha do banco
-define("SQL_PASSWD", "senha_ocomon_mysql"); //ESSA SENHA É A SENHA PADRAO CRIADA NA INSTALACAO DO SISTEMA. É RECOMENDÁVEL A ALTERACAO DA MESMA NO MYSQL.
-//Servidor do banco
-define("SQL_SERVER", "localhost"); //SE O BANCO DE DADOS ESTIVER EM UM SERVIDOR DIFERENTE DO SERVIDOR WEB DEVE-SE ALTERAR O VALOR "localhost"
-//Nome do banco
-define("SQL_DB", "ocomon_5"); //NOME DO BANCO DE DADOS. O PADRÃO DESSA VERSÃO É: ocomon_rc6
+// ============================================================
+// GOOGLE OAUTH (Workspace)
+// ============================================================
 
-define("DB_CCUSTO", "ocomon_5"); //Base de dados onde são buscados os Centros de Custos, o padrão dessa versão é: ocomon_rc6.
-define("TB_CCUSTO", "ccusto"); //Tabela de CEntro de custos dentro da base de dados - padrão: CCUSTO
-define("CCUSTO_ID", "codigo"); //Chave primária da tabela de centros de custo
-define("CCUSTO_DESC", "descricao"); //Campo referente à descrição do Centro de Custo
-define("CCUSTO_COD", "codccusto"); //Campo referente ao código de Centro de Custo
+// Domínio corporativo permitido para login (Google Workspace)
+// Ex: "laboratoriosobral.com.br" — apenas emails @laboratoriosobral.com.br poderão logar
+define("GOOGLE_WORKSPACE_DOMAIN", "SEU_DOMINIO_WORKSPACE.com.br");
 
-define("INST_TERCEIRA", "-1"); //Define que UNIDADES  não devem aparecer na estatística geral da tela de abertura - o código deve ser extraido da tabela: INSTITUICOES.
-//Por padrão todas as unidades aparecem na estatística inicial.
+// URL de callback após autenticação OAuth (deve ser HTTPS em produção)
+// Deve ser cadastrada em: Supabase → Authentication → URL Configuration → Redirect URLs
+define("OAUTH_CALLBACK_URL", "https://SEU_DOMINIO.com.br/includes/common/oauth_callback.php");
 
-define("LOG_PATH", "../../logs/logs.txt"); //Esse diretório deve ter permissão de escrita pra gravar os logs.
-define("LOGO_PATH", "../../includes/logos");
+// ============================================================
+// CENTRO DE CUSTOS (tabela externa opcional)
+// ============================================================
+
+define("DB_CCUSTO",  "postgres");    // Base de dados onde ficam os Centros de Custo
+define("TB_CCUSTO",  "ccusto");      // Tabela de Centros de Custo
+define("CCUSTO_ID",  "codigo");      // PK da tabela
+define("CCUSTO_DESC","descricao");   // Campo de descrição
+define("CCUSTO_COD", "codccusto");   // Campo de código
+
+define("INST_TERCEIRA", "-1"); // Unidades excluídas da estatística geral (código em instituicao)
+
+// ============================================================
+// CAMINHOS
+// ============================================================
+
+define("LOG_PATH",   "../../logs/logs.txt"); // Diretório deve ter permissão de escrita
+define("LOGO_PATH",  "../../includes/logos");
 define("ICONS_PATH", "../../includes/icons/");
 
 define("HELP_ICON", "" . ICONS_PATH . "solucoes2.png");
 define("HELP_PATH", "../../includes/help/");
 
-define("LANGUAGE", "pt_BR.php");
-//define ( "LANGUAGE", "en.php");
+// ============================================================
+// IDIOMA
+// ============================================================
 
-define ("ALLOWED_LANGUAGES", [
+define("LANGUAGE", "pt_BR.php");
+// define("LANGUAGE", "en.php");
+
+define("ALLOWED_LANGUAGES", [
     'pt_BR.php' => 'Português do Brasil',
-    'en.php' => 'English',
-    'es_ES.php' => 'Español'
+    'en.php'    => 'English',
+    'es_ES.php' => 'Español',
 ]);
 
 date_default_timezone_set("America/Sao_Paulo");
