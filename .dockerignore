@@ -1,0 +1,31 @@
+# Credenciais — NUNCA entram na imagem
+includes/config.inc.php
+
+# Git
+.git
+.gitmodules
+.agnostic-core
+
+# Docker
+.docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Dev/testes
+test_conn.php
+
+# Logs
+includes/logs/*
+
+# Documentação
+*.md
+changelog/
+LEIAME.*
+README.*
+COPYING.TXT
+LICENSE.md
+gpl-3.0.md
+
+# SQL de instalação (não precisa na imagem)
+install/

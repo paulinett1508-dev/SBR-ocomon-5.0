@@ -1,0 +1,48 @@
+# =============================================================================
+# Traefik — Reverse Proxy compartilhado da VPS
+# Deploy UMA VEZ na VPS. Todos os projetos Docker se conectam a ele.
+#
+# Como usar:
+#   cd /opt/traefik
+#   cp docker-compose.traefik.yml docker-compose.yml
+#   cp traefik.yml.example traefik.yml          # editar com seu email
+#   docker network create traefik-public
+#   docker compose up -d
+# =============================================================================
+
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+
+    command:
+      - "--api.dashboard=false"           # desabilitar dashboard em produção
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik-public"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=TI@laboratoriosobral.com.br"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--log.level=WARN"
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_letsencrypt:/letsencrypt
+
+    networks:
+      - traefik-public
+
+volumes:
+  traefik_letsencrypt:
+
+networks:
+  traefik-public:
+    external: true

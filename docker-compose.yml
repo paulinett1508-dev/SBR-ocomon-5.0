@@ -1,0 +1,55 @@
+services:
+  ocomon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ocomon-app
+    restart: unless-stopped
+
+    volumes:
+      # config.inc.php montado como volume — nunca entra na imagem
+      - ./includes/config.inc.php:/var/www/html/includes/config.inc.php:ro
+      # Logs persistentes
+      - ocomon_logs:/var/www/html/includes/logs
+      # Uploads/Downloads persistentes
+      - ocomon_uploads:/var/www/html/Downloads
+
+    networks:
+      - traefik-public   # rede compartilhada com o Traefik
+      - ocomon-internal  # rede interna isolada
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+
+      # Rota HTTPS
+      - "traefik.http.routers.ocomon.rule=Host(`suporte-ti.laboratoriosobral.com.br`)"
+      - "traefik.http.routers.ocomon.entrypoints=websecure"
+      - "traefik.http.routers.ocomon.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ocomon.service=ocomon-svc"
+
+      # Redirecionar HTTP → HTTPS
+      - "traefik.http.routers.ocomon-http.rule=Host(`suporte-ti.laboratoriosobral.com.br`)"
+      - "traefik.http.routers.ocomon-http.entrypoints=web"
+      - "traefik.http.routers.ocomon-http.middlewares=redirect-https"
+
+      # Porta interna do Apache
+      - "traefik.http.services.ocomon-svc.loadbalancer.server.port=80"
+
+      # Middleware redirect
+      - "traefik.http.middlewares.redirect-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-https.redirectscheme.permanent=true"
+
+    # O container não expõe porta para o host — só o Traefik acessa
+    expose:
+      - "80"
+
+volumes:
+  ocomon_logs:
+  ocomon_uploads:
+
+networks:
+  traefik-public:
+    external: true   # criada pelo Traefik — compartilhada entre projetos
+  ocomon-internal:
+    driver: bridge
